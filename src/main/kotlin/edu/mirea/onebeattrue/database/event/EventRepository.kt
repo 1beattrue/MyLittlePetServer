@@ -55,7 +55,7 @@ object EventRepository {
 
     fun getEventsByPetId(petId: Int): List<EventDto> {
         return transaction {
-            Events.select { Events.petId eq petId }
+            Events.selectAll().where { Events.petId eq petId }
                 .map {
                     EventDto(
                         id = it[Events.id],
