@@ -55,7 +55,7 @@ object MedicalDataRepository {
 
     fun getMedicalDataByPetId(petId: Int): List<MedicalDataDto> {
         return transaction {
-            MedicalData.select { MedicalData.petId eq petId }
+            MedicalData.selectAll().where { MedicalData.petId eq petId }
                 .map {
                     MedicalDataDto(
                         id = it[MedicalData.id],
