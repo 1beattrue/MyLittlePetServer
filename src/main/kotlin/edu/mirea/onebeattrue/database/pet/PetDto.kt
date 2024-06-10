@@ -9,5 +9,6 @@ data class PetDto(
     val name: String,
     val imageUrl: String?,
     val dateOfBirth: Long?,
-    val weight: Float?
+    val weight: Float?,
+    val userToken: String
 )
