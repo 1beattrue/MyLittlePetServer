@@ -13,7 +13,7 @@ class MedicalDataController {
     suspend fun createMedicalData(call: ApplicationCall) {
         val medicalDataDto = call.receive<MedicalDataDto>()
         val id = MedicalDataRepository.createMedicalData(medicalDataDto)
-        call.respond(HttpStatusCode.Created, mapOf("id" to id))
+        call.respond(HttpStatusCode.Created, id)
     }
 
     suspend fun getMedicalDataById(call: ApplicationCall) {

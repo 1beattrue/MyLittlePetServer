@@ -2,6 +2,7 @@ package edu.mirea.onebeattrue.features.pet
 
 import edu.mirea.onebeattrue.database.pet.PetDto
 import edu.mirea.onebeattrue.database.pet.PetRepository
+import edu.mirea.onebeattrue.database.user.UserRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.*
@@ -12,8 +13,14 @@ class PetController {
 
     suspend fun createPet(call: ApplicationCall) {
         val petDto = call.receive<PetDto>()
+
+        val user = UserRepository.getUserByToken(petDto.userToken)
+        if (user == null) {
+            call.respond(HttpStatusCode.NotFound, "User not found")
+        }
+
         val id = PetRepository.createPet(petDto)
-        call.respond(HttpStatusCode.Created, mapOf("id" to id))
+        call.respond(HttpStatusCode.Created, id)
     }
 
     suspend fun getPetById(call: ApplicationCall) {

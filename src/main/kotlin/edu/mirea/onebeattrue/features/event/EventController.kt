@@ -13,7 +13,7 @@ class EventController {
     suspend fun createEvent(call: ApplicationCall) {
         val eventDto = call.receive<EventDto>()
         val id = EventRepository.createEvent(eventDto)
-        call.respond(HttpStatusCode.Created, mapOf("id" to id))
+        call.respond(HttpStatusCode.Created, id)
     }
 
     suspend fun getEventById(call: ApplicationCall) {

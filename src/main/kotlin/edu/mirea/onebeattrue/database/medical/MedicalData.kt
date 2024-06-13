@@ -6,6 +6,6 @@ object MedicalData : Table() {
     val id = MedicalData.integer("id").autoIncrement()
     val type = MedicalData.varchar("type", 50)
     val imageUrl = MedicalData.text("image_url").nullable()
-    val text = MedicalData.text("image_url")
+    val text = MedicalData.text("text")
     val petId = MedicalData.integer("pet_id")
 }

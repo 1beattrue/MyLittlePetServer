@@ -13,7 +13,7 @@ class NoteController {
     suspend fun createNote(call: ApplicationCall) {
         val noteDto = call.receive<NoteDto>()
         val id = NoteRepository.createNote(noteDto)
-        call.respond(HttpStatusCode.Created, mapOf("id" to id))
+        call.respond(HttpStatusCode.Created, id)
     }
 
     suspend fun getNoteById(call: ApplicationCall) {
