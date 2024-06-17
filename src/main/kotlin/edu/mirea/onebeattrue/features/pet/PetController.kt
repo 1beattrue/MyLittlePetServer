@@ -67,4 +67,25 @@ class PetController {
         val pets = PetRepository.getPetsByUserToken(userToken)
         call.respond(HttpStatusCode.OK, pets)
     }
+
+    suspend fun copyPet(call: ApplicationCall) {
+        val petId = call.parameters["petId"]?.toIntOrNull()
+        val newUserToken = call.parameters["newUserToken"]
+
+        if (petId == null || newUserToken == null) {
+            call.respond(HttpStatusCode.BadRequest, "Pet ID and newUserToken are required")
+            return
+        }
+
+        try {
+            val newPet = PetRepository.copyPet(petId, newUserToken)
+            if (newPet != null) {
+                call.respond(HttpStatusCode.Created, newPet)
+            } else {
+                call.respond(HttpStatusCode.InternalServerError, "Failed to copy pet")
+            }
+        } catch (e: Exception) {
+            call.respond(HttpStatusCode.BadRequest, e.message ?: "An error occurred")
+        }
+    }
 }

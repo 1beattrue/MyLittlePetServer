@@ -1,5 +1,6 @@
 package edu.mirea.onebeattrue.database.pet
 
+import edu.mirea.onebeattrue.database.medical.MedicalDataRepository
 import edu.mirea.onebeattrue.database.pet.Pets.dateOfBirth
 import edu.mirea.onebeattrue.database.pet.Pets.imageUrl
 import edu.mirea.onebeattrue.database.pet.Pets.name
@@ -82,6 +83,31 @@ object PetRepository {
                         userToken = it[Pets.userToken]
                     )
                 }
+        }
+    }
+
+    fun copyPet(petId: Int, newUserToken: String): PetDto? {
+        return transaction {
+            val pet = getPetById(petId) ?: throw IllegalArgumentException("Pet not found")
+
+            val newPetId = createPet(
+                pet.copy(
+                    id = 0,
+                    userToken = newUserToken
+                )
+            )
+
+            val medicalData = MedicalDataRepository.getMedicalDataByPetId(pet.id)
+            medicalData.forEach { data ->
+                MedicalDataRepository.createMedicalData(
+                    data.copy(
+                        id = PetDto.UNDEFINED_ID,
+                        petId = newPetId
+                    )
+                )
+            }
+
+            getPetById(newPetId)
         }
     }
 }

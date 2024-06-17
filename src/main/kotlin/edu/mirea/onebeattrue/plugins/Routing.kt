@@ -28,6 +28,7 @@ fun Application.configureRouting() {
                 put("/{id}") { PetController().updatePet(call) }
                 delete("/{id}") { PetController().deletePet(call) }
                 get("/byUserToken/{userToken}") { PetController().getPetsByUserToken(call) }
+                post("/copy/{petId}") { PetController().copyPet(call) }
             }
 
             route("/notes") {
@@ -38,7 +39,7 @@ fun Application.configureRouting() {
                 get("/byPetId/{petId}") { NoteController().getNotesByPetId(call) }
             }
 
-            route("/medicalData") {
+            route("/medical") {
                 post("/create") { MedicalDataController().createMedicalData(call) }
                 get("/{id}") { MedicalDataController().getMedicalDataById(call) }
                 put("/{id}") { MedicalDataController().updateMedicalData(call) }
