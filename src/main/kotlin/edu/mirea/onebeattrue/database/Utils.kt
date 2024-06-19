@@ -5,11 +5,10 @@ import edu.mirea.onebeattrue.database.medical.MedicalData
 import edu.mirea.onebeattrue.database.note.Notes
 import edu.mirea.onebeattrue.database.pet.Pets
 import edu.mirea.onebeattrue.database.user.Users
-import io.ktor.server.application.*
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 
-fun Application.configureDatabase() {
+fun configureDatabase() {
     transaction {
         SchemaUtils.createMissingTablesAndColumns(
             Users,
