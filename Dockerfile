@@ -1,25 +1,24 @@
-# Use a multi-stage build to reduce the final image size
+# Use the official Gradle image to create a build artifact.
+# This is based on openjdk:8-jdk.
+FROM gradle:8.4-jdk20 AS build
 
-# Stage 1: Build
-FROM gradle:8.1.1-jdk17 AS build
-WORKDIR /app
-COPY . /app
+# Copy local code to the container image.
+COPY --chown=gradle:gradle . /home/gradle/project
+
+# Set the working directory
+WORKDIR /home/gradle/project
 
 # Build the application
-RUN gradle installDist --no-daemon
+RUN gradle build --no-daemon
 
 # Stage 2: Run
-FROM openjdk:17-jdk-slim
+FROM openjdk:20-slim
 
-# Define environment variables
-ENV APP_HOME /app
-WORKDIR $APP_HOME
+# Copy the jar file from the build stage to the run stage
+COPY --from=build /home/gradle/project/build/libs/*.jar /app/app.jar
 
-# Copy only the distribution from the build stage
-COPY --from=build /app/build/install /app
-
-# Expose port for application
+# Expose the port the application runs on
 EXPOSE 8080
 
-# Start the application
-ENTRYPOINT ["./my-little-pet/bin/my-little-pet"]
+# Run the application
+#ENTRYPOINT ["java","-jar","/app/app.jar"]
