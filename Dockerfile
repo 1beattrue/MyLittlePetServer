@@ -9,4 +9,4 @@ WORKDIR /usr/src/app/target
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "petServer-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "myLittlePet-0.0.1-SNAPSHOT.jar"]
