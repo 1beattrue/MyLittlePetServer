@@ -5,7 +5,7 @@ import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 
 object Events : Table() {
-    val id = Events.integer("id").autoIncrement()
+    val id = Events.integer("id").uniqueIndex().autoIncrement()
     val time = Events.long("time")
     val label = Events.varchar("label", 255)
     val repeatable = Events.bool("repeatable")
