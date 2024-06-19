@@ -1,12 +1,15 @@
-# Use the official Gradle image to create a build artifact.
-# This is based on openjdk:8-jdk.
 FROM gradle:8.4-jdk20 AS build
 
-WORKDIR /usr/src/app
-COPY . .
+COPY --chown=gradle:gradle . /home/gradle/project
 
-WORKDIR /usr/src/app/target
+WORKDIR /home/gradle/project
+
+RUN gradle build --no-daemon
+
+FROM openjdk:20-slim
+
+COPY --from=build /home/gradle/project/build/libs/*.jar /app/app.jar
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "myLittlePet-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "/app/app.jar"]
