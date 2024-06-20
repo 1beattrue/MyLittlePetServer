@@ -7,9 +7,9 @@ data class PetDto(
     val id: Int = UNDEFINED_ID,
     val type: String,
     val name: String,
-    val imageUrl: String?,
-    val dateOfBirth: Long?,
-    val weight: Float?,
+    val imageUrl: String? = null,
+    val dateOfBirth: Long? = null,
+    val weight: Float? = null,
     val userToken: String
 ) {
     companion object {

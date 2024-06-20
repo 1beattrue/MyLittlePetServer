@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class MedicalDataDto(
     val id: Int = UNDEFINED_ID,
     val type: String,
-    val imageUrl: String?,
+    val imageUrl: String? = null,
     val text: String,
     val petId: Int
 ) {
