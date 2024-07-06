@@ -53,7 +53,7 @@ fun Application.configureRouting() {
                 put("/{id}") { EventController().updateEvent(call) }
                 delete("/{id}") { EventController().deleteEvent(call) }
                 get("/byPetId/{petId}") { EventController().getEventsByPetId(call) }
-                delete("/irrelevant/{petId}") { EventController().deleteIrrelevantEventsByPetId(call) }
+                delete("irrelevant/{petId}") { EventController().deleteIrrelevantEvents(call) }
             }
         }
     }

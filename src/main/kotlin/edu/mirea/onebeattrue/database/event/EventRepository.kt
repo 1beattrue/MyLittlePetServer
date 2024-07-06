@@ -70,15 +70,32 @@ object EventRepository {
         }
     }
 
-    fun deleteIrrelevantEvents(petId: Int): Int {
+    fun deleteIrrelevantEvents(petId: Int): List<EventDto> {
         val currentTime = Instant.now().toEpochMilli()
 
         return transaction {
+            val irrelevantEvents = Events
+                .selectAll().where {
+                    (Events.time less currentTime) and
+                            (Events.repeatable eq false) and
+                            (Events.petId eq petId)
+                }
+                .map { row ->
+                    EventDto(
+                        id = row[Events.id],
+                        time = row[Events.time],
+                        label = row[Events.label],
+                        repeatable = row[Events.repeatable],
+                        petId = row[Events.petId]
+                    )
+                }
+
             Events.deleteWhere {
                 (time less currentTime) and
                         (repeatable eq false) and
                         (Events.petId eq petId)
             }
+            irrelevantEvents
         }
     }
 }
