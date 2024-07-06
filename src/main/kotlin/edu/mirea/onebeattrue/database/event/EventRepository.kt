@@ -2,7 +2,9 @@ package edu.mirea.onebeattrue.database.event
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.less
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.time.Instant
 
 object EventRepository {
 
@@ -65,6 +67,18 @@ object EventRepository {
                         petId = it[Events.petId]
                     )
                 }
+        }
+    }
+
+    fun deleteIrrelevantEvents(petId: Int): Int {
+        val currentTime = Instant.now().toEpochMilli()
+
+        return transaction {
+            Events.deleteWhere {
+                (time less currentTime) and
+                        (repeatable eq false) and
+                        (Events.petId eq petId)
+            }
         }
     }
 }

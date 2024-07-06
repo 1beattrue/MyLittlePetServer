@@ -60,4 +60,12 @@ class EventController {
         val eventList = EventRepository.getEventsByPetId(petId)
         call.respond(HttpStatusCode.OK, eventList)
     }
+
+    suspend fun deleteIrrelevantEventsByPetId(call: ApplicationCall) {
+        val petId = call.parameters["petId"]?.toIntOrNull()
+            ?: throw BadRequestException("Pet ID can't be null or non-numeric")
+
+        val deletedCount = EventRepository.deleteIrrelevantEvents(petId)
+        call.respond(HttpStatusCode.OK, "Deleted $deletedCount irrelevant events for petId $petId")
+    }
 }
